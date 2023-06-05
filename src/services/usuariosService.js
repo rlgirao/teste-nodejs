@@ -8,7 +8,7 @@ class UsuariosService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -18,7 +18,7 @@ class UsuariosService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -31,7 +31,7 @@ class UsuariosService {
 
       return { message: 'usuario atualizado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -41,7 +41,7 @@ class UsuariosService {
       
       return { message: 'usuario excluído' };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 }

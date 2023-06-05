@@ -27,7 +27,7 @@ class AuthService {
 
       return { message: 'Usuario conectado', accessToken };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -58,7 +58,7 @@ class AuthService {
       const resposta = await usuario.salvar(usuario);
       return { message: 'usuario criado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 }

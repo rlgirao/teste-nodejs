@@ -7,7 +7,7 @@ class EditorasService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -17,7 +17,7 @@ class EditorasService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -34,9 +34,9 @@ class EditorasService {
       return { message: 'editora criada', content: resposta };
     } catch (err) {
       if (err.message === 'corpo da requisicao vazio') {
-        return err.message;
+        throw new Error(err.message);
       }
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -48,7 +48,7 @@ class EditorasService {
 
       return { message: 'editora atualizada', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -58,7 +58,7 @@ class EditorasService {
 
       return { message: 'editora excluída' };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -69,7 +69,7 @@ class EditorasService {
 
       return { editora: resultado[0], livros: listaLivros };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 }

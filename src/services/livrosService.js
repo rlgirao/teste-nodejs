@@ -7,7 +7,7 @@ class LivrosService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -17,7 +17,7 @@ class LivrosService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -28,7 +28,7 @@ class LivrosService {
 
       return { message: 'livro criado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -40,7 +40,7 @@ class LivrosService {
 
       return { message: 'livro atualizado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -49,7 +49,7 @@ class LivrosService {
       await Livro.excluir(id);
       return { message: 'livro excluído' };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 }
