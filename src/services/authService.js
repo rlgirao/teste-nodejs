@@ -6,16 +6,24 @@ import constants from '../config/constants.js';
 class AuthService {
   async login(data) {
     try {
+      if (!data.email) {
+        throw new Error('O email do usuario é obrigatório.');
+      }
+  
+      if (!data.password) {
+        throw new Error('O password do usuario é obrigatório.');
+      }
+
       const usuario = await Usuario.pegarPeloEmail(data.email);
 
       if (!usuario) {
-        throw new Error('Usuario não cadastrado');
+        throw new Error('Usuario não cadastrado.');
       }
 
       const senhaIguais = await bcryptjs.compare(data.password, usuario.password);
 
       if (!senhaIguais) {
-        throw new Error('Usuario ou senha invalido');
+        throw new Error('Usuario ou senha invalido.');
       }
 
       const accessToken = jsonwebtoken.sign({
