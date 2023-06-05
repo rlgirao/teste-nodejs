@@ -1,9 +1,11 @@
-import Livro from '../models/livro.js';
+import LivrosService from "../services/livrosService.js";
 
+const livrosService = new LivrosService();
 class LivrosController {
-  static listarLivros = async (_, res) => {
+  static listarLivros = async (req, res) => {
     try {
-      const resultado = await Livro.pegarLivros();
+      const resultado = await livrosService.listarLivros();
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -13,7 +15,8 @@ class LivrosController {
   static listarLivroPorId = async (req, res) => {
     const { params } = req;
     try {
-      const resultado = await Livro.pegarPeloId(params.id);
+      const resultado = await livrosService.listarLivroPorId(params.id);
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -22,10 +25,10 @@ class LivrosController {
 
   static cadastrarLivro = async (req, res) => {
     const { body } = req;
-    const livro = new Livro(body);
     try {
-      const resposta = await livro.salvar(livro);
-      return res.status(201).json({ message: 'livro criado', content: resposta });
+      const resposta = await livrosService.cadastrarLivro(body);
+
+      return res.status(201).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -35,10 +38,9 @@ class LivrosController {
     const { params } = req;
     const { body } = req;
     try {
-      const livroAtual = await Livro.pegarPeloId(params.id);
-      const novoLivro = new Livro({ ...livroAtual, ...body });
-      const resposta = await novoLivro.salvar(novoLivro);
-      return res.status(200).json({ message: 'livro atualizado', content: resposta });
+      const resposta = await livrosService.atualizarLivro(params.id, body);
+
+      return res.status(200).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -47,8 +49,8 @@ class LivrosController {
   static excluirLivro = async (req, res) => {
     const { params } = req;
     try {
-      await Livro.excluir(params.id);
-      return res.status(200).json({ message: 'livro excluído' });
+      const excluir = await livrosService.excluirLivro(params.id);
+      return res.status(200).json(excluir);
     } catch (err) {
       return res.status(500).json(err.message);
     }

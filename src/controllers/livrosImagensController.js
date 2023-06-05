@@ -1,11 +1,11 @@
-import fs from 'fs';
-import LivroImagem from '../models/livro_imagem.js';
-import constants from '../config/constants.js';
+import LivrosImagensService from '../services/livrosImagensService.js';
 
+const livrosImagensService = new LivrosImagensService();
 class LivrosImagensController {
-  static listarImagens = async (_, res) => {
+  static listarImagens = async (req, res) => {
     try {
-      const resultado = await LivroImagem.pegarImagens();
+      const resultado = await livrosImagensService.listarImagens();
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -15,7 +15,8 @@ class LivrosImagensController {
   static listarImagemPorId = async (req, res) => {
     const { params } = req;
     try {
-      const resultado = await LivroImagem.pegarPeloId(params.id);
+      const resultado = await livrosImagensService.listarImagemPorId(params.id);
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -23,22 +24,10 @@ class LivrosImagensController {
   };
 
   static cadastrarImagem = async (req, res) => {
-    const buffer = req.file.buffer;
-    const base64Image = buffer.toString('base64');
-
-    const data = {
-      livro_id: req.body.livroId,
-      filename: req.file.originalname,
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      base64: base64Image,
-    };
-
-    const imagem = new LivroImagem(data);
-
     try {
-      const resposta = await imagem.salvar(imagem);
-      return res.status(201).json({ message: 'imagem criado', content: resposta });
+      const resposta = await livrosImagensService.cadastrarImagem(req);
+      
+      return res.status(201).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -48,10 +37,9 @@ class LivrosImagensController {
     const { params } = req;
     const { body } = req;
     try {
-      const imagemAtual = await LivroImagem.pegarPeloId(params.id);
-      const imagemLivro = new LivroImagem({ ...imagemAtual, ...body });
-      const resposta = await imagemLivro.salvar(imagemLivro);
-      return res.status(200).json({ message: 'imagem atualizado', content: resposta });
+      const resposta = await livrosImagensService.atualizarImagem(params.id, body);
+
+      return res.status(200).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -60,8 +48,8 @@ class LivrosImagensController {
   static excluirImagemLivro = async (req, res) => {
     const { params } = req;
     try {
-      await LivroImagem.excluir(params.id);
-      return res.status(200).json({ message: 'imagem excluído' });
+      const excluir = await livrosImagensService.excluirImagemLivro(params.id);
+      return res.status(200).json(excluir);
     } catch (err) {
       return res.status(500).json(err.message);
     }

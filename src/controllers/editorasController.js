@@ -1,9 +1,11 @@
-import Editora from '../models/editora.js';
+import EditorasService from '../services/editorasService.js';
 
+const editorasService = new EditorasService();
 class EditorasController {
-  static listarEditoras = async (_, res) => {
+  static listarEditoras = async (req, res) => {
     try {
-      const resultado = await Editora.pegarEditoras();
+      const resultado = await editorasService.listarEditoras();
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -13,7 +15,8 @@ class EditorasController {
   static listarEditoraPorId = async (req, res) => {
     const { params } = req;
     try {
-      const resultado = await Editora.pegarPeloId(params.id);
+      const resultado = await editorasService.listarEditoraPorId(params.id);
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -22,17 +25,15 @@ class EditorasController {
 
   static cadastrarEditora = async (req, res) => {
     const { body } = req;
-    const editora = new Editora(body);
     try {
-      if (Object.keys(body).length === 0) {
-        throw new Error('corpo da requisicao vaio');
-      }
-      const resposta = await editora.salvar(editora);
-      return res.status(201).json({ message: 'editora criada', content: resposta });
+      const resposta = await editorasService.cadastrarEditora(body);
+
+      return res.status(201).json(resposta);
     } catch (err) {
-      if (err.message === 'corpo da requisicao vaio') {
+      if (err.message === 'corpo da requisicao vazio') {
         return res.status(400).json(err.message);
       }
+
       return res.status(500).json(err.message);
     }
   };
@@ -41,10 +42,9 @@ class EditorasController {
     const { params } = req;
     const { body } = req;
     try {
-      const editoraAtual = await Editora.pegarPeloId(params.id);
-      const novaEditora = new Editora({ ...editoraAtual, ...body });
-      const resposta = await novaEditora.salvar(novaEditora);
-      return res.status(204).json({ message: 'editora atualizada', content: resposta });
+      const resposta = await editorasService.atualizarEditora(params.id, body);
+
+      return res.status(204).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -53,8 +53,8 @@ class EditorasController {
   static excluirEditora = async (req, res) => {
     const { params } = req;
     try {
-      await Editora.excluir(params.id);
-      return res.status(200).json({ message: 'editora excluída' });
+      const excluir = await editorasService.excluirEditora(params.id);
+      return res.status(200).json(excluir);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -63,9 +63,9 @@ class EditorasController {
   static listarLivrosPorEditora = async (req, res) => {
     const { params } = req;
     try {
-      const resultado = await Editora.pegarPeloId(params.id);
-      const listaLivros = await Editora.pegarLivrosPorEditora(params.id);
-      return res.status(200).json({ editora: resultado[0], livros: listaLivros });
+      const resultado = await editorasService.listarLivrosPorEditora(params.id);
+
+      return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
     }

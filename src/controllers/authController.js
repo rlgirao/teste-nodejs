@@ -1,7 +1,6 @@
 import AuthService from '../services/authService.js';
 
 const authService = new AuthService();
-
 class AuthController {
   static login = async (req, res) => {
     const { body } = req;

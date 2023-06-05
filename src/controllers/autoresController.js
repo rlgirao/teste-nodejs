@@ -1,9 +1,11 @@
-import Autor from '../models/autor.js';
+import AutoresService from "../services/autoresService.js";
 
+const autoresService = new AutoresService();
 class AutoresController {
-  static listarAutores = async (_, res) => {
+  static listarAutores = async (req, res) => {
     try {
-      const resultado = await Autor.pegarAutores();
+      const resultado = await autoresService.listarAutores();
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -13,7 +15,8 @@ class AutoresController {
   static listarAutorPorId = async (req, res) => {
     const { params } = req;
     try {
-      const resultado = await Autor.pegarPeloId(params.id);
+      const resultado = await autoresService.listarAutorPorId(params.id);
+
       return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
@@ -22,10 +25,10 @@ class AutoresController {
 
   static cadastrarAutor = async (req, res) => {
     const { body } = req;
-    const autor = new Autor(body);
     try {
-      const resposta = await autor.salvar(autor);
-      return res.status(201).json({ message: 'autor criado', content: resposta });
+      const resposta = await autoresService.cadastrarAutor(body);
+
+      return res.status(201).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -35,10 +38,9 @@ class AutoresController {
     const { params } = req;
     const { body } = req;
     try {
-      const autorAtual = await Autor.pegarPeloId(params.id);
-      const novoAutor = new Autor({ ...autorAtual, ...body });
-      const resposta = await novoAutor.salvar(novoAutor);
-      return res.status(200).json({ message: 'autor atualizado', content: resposta });
+      const resposta = await autoresService.atualizarAutor(params.id, body);
+
+      return res.status(200).json(resposta);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -47,8 +49,9 @@ class AutoresController {
   static excluirAutor = async (req, res) => {
     const { params } = req;
     try {
-      await Autor.excluir(params.id);
-      return res.status(200).json({ message: 'autor excluído' });
+      const excluir = await autoresService.excluirAutor(params.id);
+
+      return res.status(200).json(excluir);
     } catch (err) {
       return res.status(500).json(err.message);
     }
@@ -57,9 +60,9 @@ class AutoresController {
   static listarLivrosPorAutor = async (req, res) => {
     const { params } = req;
     try {
-      const resultado = await Autor.pegarPeloId(params.id);
-      const listaLivros = await Autor.pegarLivrosPorAutor(params.id);
-      return res.status(200).json({ autor: resultado[0], livros: listaLivros });
+      const resultado = await autoresService.listarLivrosPorAutor(params.id);
+
+      return res.status(200).json(resultado);
     } catch (err) {
       return res.status(500).json(err.message);
     }
