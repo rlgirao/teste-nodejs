@@ -9,7 +9,7 @@ class AluguelLivroService {
       const resultado = await AluguelLivro.pegarAluguelLivros();
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -18,7 +18,7 @@ class AluguelLivroService {
       const resultado = await AluguelLivro.pegarPeloId(id);
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -48,7 +48,7 @@ class AluguelLivroService {
 
       return { message: 'Registro de Aluguel de Livro criado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -78,7 +78,7 @@ class AluguelLivroService {
 
       return { message: 'O Livro foi devolvido com sucesso.', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -87,7 +87,7 @@ class AluguelLivroService {
       await AluguelLivro.excluir(id);
       return { message: 'Registro de Aluguel de Livro excluído' };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 }

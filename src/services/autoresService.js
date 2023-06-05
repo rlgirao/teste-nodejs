@@ -7,7 +7,7 @@ class AutoresService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -17,7 +17,7 @@ class AutoresService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -28,7 +28,7 @@ class AutoresService {
 
       return { message: 'autor criado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -40,7 +40,7 @@ class AutoresService {
 
       return { message: 'autor atualizado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -49,7 +49,7 @@ class AutoresService {
       await Autor.excluir(id);
       return { message: 'autor excluído' };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 
@@ -60,7 +60,7 @@ class AutoresService {
 
       return { autor: resultado[0], livros: listaLivros };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   }
 }

@@ -7,7 +7,7 @@ class LivrosImagensService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -17,7 +17,7 @@ class LivrosImagensService {
 
       return resultado;
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -39,7 +39,7 @@ class LivrosImagensService {
 
       return { message: 'imagem criado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -51,7 +51,7 @@ class LivrosImagensService {
 
       return { message: 'imagem atualizado', content: resposta };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 
@@ -61,7 +61,7 @@ class LivrosImagensService {
       
       return { message: 'imagem excluído' };
     } catch (err) {
-      return err.message;
+      throw new Error(err.message);
     }
   };
 }
