@@ -1,0 +1,2 @@
+Teste de conexão com o banco de dados
+Deve retornar o primeiro registro da tabela autores
