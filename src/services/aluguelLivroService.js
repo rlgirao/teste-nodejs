@@ -24,16 +24,27 @@ class AluguelLivroService {
 
   async alugarLivro(body, usuarioId) {
     try {
+      if (!body.livroId) {
+        throw new Error('O id do livro é obrigatório.');
+      }
+      
       const livroAlugado = await AluguelLivro.pegarPeloId(body.livroId);
 
       if (livroAlugado && livroAlugado.alugado === true) {
         throw new Error('Livro já esta alugado');
       }
 
+      if (!body.diasAlugados) {
+        throw new Error('O número de dias alugados é obrigatório.');
+      }
+
+      const dataDevolucao = await this.calcularDataDevolucao(body.diasAlugados);
+
       const data = {
         livro_id: body.livroId,
         usuario_id: usuarioId,
         dias_alugados: body.diasAlugados,
+        data_devolucao: dataDevolucao,
         alugado: true,
       };
 
@@ -89,6 +100,16 @@ class AluguelLivroService {
     } catch (err) {
       throw new Error(err.message);
     }
+  }
+
+  async calcularDataDevolucao(diasAlugados) {
+    const dataDevolucao = new Date();
+
+    if (diasAlugados > 1) {
+      dataDevolucao.setDate(dataDevolucao.getDate() + diasAlugados);
+    }
+
+    return dataDevolucao;
   }
 }
 

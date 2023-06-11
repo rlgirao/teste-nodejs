@@ -1,0 +1,7 @@
+O nosso sistema ao usuario alugar um livro ele deve pegar o numero de dias e verificar a data de devolução do livro alugado, contando a partir do dia atual.
+
+Vamos adicionar uma nova coluna na nossa tabela de aluguel de livros com a data de devolução do livro. Usaremos o script abaixo para criar essa coluna.
+
+Script: ALTER TABLE aluguel_livro ADD COLUMN data_devolucao DATE;
+
+Ex: O usuario alugou o livro por 5 dias. Hoje é dia 10/06/2023. Seguindo a regra descrita acima  o usuario precisa devolver o livro no dia 15/06/2023.
