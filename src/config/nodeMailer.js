@@ -1,26 +1,32 @@
 import nodemailer from 'nodemailer';
 
-export default async (para, assunto, mensagem) => {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'curso.teste.nodejs@gmail.com',
-      pass: '123!@#456!@#',
-    },
-  });
+const enviarEmail = async (para, assunto, mensagem) => {
+  try {
+    const testAccount = await nodemailer.createTestAccount();
 
-  const mailOptions = {
-    from: 'curso.teste.nodejs@gmail.com',
-    to: para,
-    subject: assunto,
-    text: mensagem,
-  };
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass,
+      },
+    });
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log('Erro ao enviar o e-mail:', error);
-    } else {
-      console.log('E-mail enviado com sucesso:', info.response);
-    }
-  });
+    const mailOptions = {
+      from: '"Fred Foo" <foo@example.com>',
+      to: para,
+      subject: assunto,
+      text: mensagem,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+
+    return info;
+  } catch (error) {
+    throw new Error('Erro ao enviar o e-mail.');
+  }
 };
+
+export default enviarEmail;
