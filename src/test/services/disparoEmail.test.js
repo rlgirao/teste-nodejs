@@ -39,7 +39,7 @@ describe('Testando disparo de email', () => {
       from: '"Fred Foo" <foo@example.com>',
       to: 'rlgirao@gmail.com',
       subject: 'Aluguel de Livro',
-      text: 'Olá, Raphael, você alugou o livro Harry Potter por 5 dias.',
+      text: 'Olá, Raphael, você alugou o livro Harry Potter e o Cálice de Fogo por 5 dias.',
     };
 
     const info = await transporter.sendMail(dadosEmailMock);
